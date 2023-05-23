@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Http\Controllers\API;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // routes/api.php
 
-Route::post('/register', 'Auth\RegisterController@register')->name('register');
+Route::post('/register', 'API\Auth\RegisterController@register')->name('register');

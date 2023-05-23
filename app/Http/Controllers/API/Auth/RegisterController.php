@@ -16,9 +16,10 @@ class RegisterController extends Controller
         ]);
 
         $user = User::create([
-            'name' => 'Admin', // You can change this as needed
+            'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
+
         ]);
 
         return response()->json(['message' => 'User registered successfully.', 'user' => $user]);
