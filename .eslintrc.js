@@ -7,6 +7,6 @@ module.exports = {
       parser: 'babel-eslint',
     },
     rules: {
-      // remove 'prettier/prettier' rule here
+        "rule-to-turn-off": "off"
     },
 };

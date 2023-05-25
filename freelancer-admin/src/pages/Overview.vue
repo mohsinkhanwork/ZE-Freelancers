@@ -31,7 +31,7 @@
             </div>
           </stats-card>
         </div>
-
+        <p>Welcome, {{ $store.state.user.email }}</p>
         <div class="col-xl-3 col-md-6">
           <stats-card>
             <div slot="header" class="icon-danger">

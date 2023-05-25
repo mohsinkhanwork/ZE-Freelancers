@@ -30,9 +30,9 @@
             <a class="dropdown-item" href="#">Separated link</a>
           </base-dropdown>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{path:'/logout'}">
+            <a class="nav-link" href="#" @click="handleLogout">
               Log out
-            </router-link>
+            </a>
           </li>
         </ul>
       </div>
@@ -40,6 +40,8 @@
   </nav>
 </template>
 <script>
+import { logout } from '../auth';
+
   export default {
     computed: {
       routeName () {
@@ -53,6 +55,10 @@
       }
     },
     methods: {
+      handleLogout () {
+        logout()
+        this.$router.push({name: 'Login'})
+      },
       capitalizeFirstLetter (string) {
         return string.charAt(0).toUpperCase() + string.slice(1)
       },

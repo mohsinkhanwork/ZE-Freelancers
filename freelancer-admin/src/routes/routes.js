@@ -1,5 +1,4 @@
 import DashboardLayout from '../layout/DashboardLayout.vue'
-// GeneralViews
 import NotFound from '../pages/NotFoundPage.vue'
 
 
@@ -7,7 +6,7 @@ import NotFound from '../pages/NotFoundPage.vue'
 import Overview from 'src/pages/Overview.vue'
 import UserProfile from 'src/pages/UserProfile.vue'
 import TableList from 'src/pages/TableList.vue'
-import Logout from 'src/pages/Logout.vue'
+import Login from 'src/pages/login.vue'
 import Register from 'src/pages/Register.vue'
 
 const routes = [
@@ -20,6 +19,13 @@ const routes = [
     path: '/admin',
     component: DashboardLayout,
     redirect: '/admin/overview',
+    beforeEnter: (to, from, next) => {
+      if (sessionStorage.getItem('Bearer_token')) {
+        next();
+      } else {
+        next({name: 'Login'});
+      }
+    },
     children: [
       {
         path: 'overview',
@@ -39,9 +45,9 @@ const routes = [
     ]
   },
   {
-    path: '/logout',
-    name: 'Logout',
-    component: Logout
+    path: '/login',
+    name: 'Login',
+    component: Login
 
   },
   {
