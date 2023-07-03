@@ -5,9 +5,13 @@ import NotFound from '../pages/NotFoundPage.vue'
 // Admin pages
 import Overview from 'src/pages/Overview.vue'
 import UserProfile from 'src/pages/UserProfile.vue'
-import TableList from 'src/pages/TableList.vue'
+import userManagement from 'src/pages/userManagement.vue'
+import userRole from 'src/pages/userRole.vue'
 import Login from 'src/pages/login.vue'
 import Register from 'src/pages/Register.vue'
+import Callback from 'src/pages/Callback.vue'
+import store from '../store/index.js';
+import editUser from "src/pages/editUser";
 
 const routes = [
   {
@@ -20,7 +24,7 @@ const routes = [
     component: DashboardLayout,
     redirect: '/admin/overview',
     beforeEnter: (to, from, next) => {
-      if (sessionStorage.getItem('Bearer_token')) {
+      if (store.state.token) {
         next();
       } else {
         next({name: 'Login'});
@@ -38,9 +42,19 @@ const routes = [
         component: UserProfile
       },
       {
-        path: 'table-list',
-        name: 'Table List',
-        component: TableList
+        path: 'user-management',
+        name: 'User Management',
+        component: userManagement
+      },
+      {
+        path: 'user-role',
+        name: 'User Role',
+        component: userRole
+      },
+      {
+        path: 'edit-user/:id',
+        name: 'Edit User',
+        component: editUser
       },
     ]
   },
@@ -54,6 +68,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/callback',
+    name: 'Callback',
+    component: Callback,
   },
   {
     path: '*',

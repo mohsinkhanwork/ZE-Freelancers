@@ -1,13 +1,14 @@
 <template>
   <card>
-    <h4 slot="header" class="card-title">Edit Profile</h4>
+    <h4 slot="header" class="card-title">Edit User info</h4>
     <form>
       <div class="row">
         <div class="col-md-5">
           <base-input type="text"
                     label="Company"
                     placeholder="Light dashboard"
-                    v-model="user.user_data.company">
+                    v-model="user.user_data.company
+                    ">
           </base-input>
         </div>
         <div class="col-md-3">
@@ -89,7 +90,7 @@
         </div>
       </div>
       <div class="text-center">
-        <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="updateProfile">
+        <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="updateUserProfile">
           Update Profile
         </button>
       </div>
@@ -103,44 +104,53 @@
 
   export default {
     computed: {
-      ...mapState({
-        stateUser: state => state.user
-      })
+      user: {
+        get() {
+          return this.$store.state.currentEditUser;
+        },
+        set(newUser) {
+          this.$store.commit('setCurrentEditUser', newUser);
+        }
+      }
     },
+
+    data () {
+      return {
+      }
+    },
+
+    async created () {
+      const userId = this.$route.params.id;
+      const user = this.$store.state.users.find(user => user.id === userId);
+      await this.$store.dispatch('fetchUserById', user);
+    },
+
+    methods: {
+      ...mapActions(['getUser']),
+      async updateUserProfile() {
+        try {
+        const updatedUser = await this.$store.dispatch('updateUserProfile', this.user);
+        alert('User updated successfully');
+        } catch (error) {
+         alert('Error updating user', error);
+        }
+      },
+    },
+
+    watch: {
+  'user': {
+    handler(newUser) {
+        this.user = newUser; // update local data when Vuex state changes
+    },
+    deep: true // ensure watcher triggers for nested data changes
+  }
+},
+
+
 
     components: {
       Card
     },
-    data () {
-      return {
-        user: this.$store.state.user,
-      }
-    },
-    methods: {
-     ...mapActions(['updateUserProfile']),
-    async updateProfile() {
-      try {
-        const updatedUser = await this.updateUserProfile(this.user);
-        this.$store.commit('setUser', updatedUser);
-        this.user = Object.assign({}, updatedUser);
-        alert ('Profile updated successfully');
-      } catch (error) {
-        console.log(error);
-        alert ('Error updating profile');
-      }
-    }
-    },
-    created() {
-      this.$set(this, 'user', Object.assign({}, this.stateUser));
-    },
-    watch: {
-    '$store.state.user': {
-        handler(newUser) {
-            this.user = newUser; // update local data when Vuex state changes
-        },
-        deep: true // ensure watcher triggers for nested data changes
-    }
-    }
   }
 
 </script>

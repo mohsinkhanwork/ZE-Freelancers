@@ -31,7 +31,6 @@
             </div>
           </stats-card>
         </div>
-        <p>Welcome, {{ $store.state.user.email }}</p>
         <div class="col-xl-3 col-md-6">
           <stats-card>
             <div slot="header" class="icon-danger">
@@ -71,7 +70,11 @@
   import StatsCard from 'src/components/Cards/StatsCard.vue'
   import LTable from 'src/components/Table.vue'
 
+  import { mapState } from 'vuex';
+
+
   export default {
+
     components: {
       LTable,
       ChartCard,
@@ -91,6 +94,3 @@
     }
   }
 </script>
-<style>
-
-</style>

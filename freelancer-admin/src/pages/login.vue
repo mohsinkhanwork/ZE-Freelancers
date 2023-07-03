@@ -13,16 +13,19 @@
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="form.password" required>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="remember">Remember Me:</label>
         <input type="checkbox" id="remember" v-model="form.remember" style="width: 41px;">
-      </div>
+      </div> -->
+      <div class="form-group" style="text-align: center;">
       <button type="submit" class="submit-btn">Login</button>
+    </div>
     </form>
     <hr>
     <router-link to="/register">
       Register Here
     </router-link>
+    <button @click="linkedinLogin" class="linkedin-btn submit-btn">Login with LinkedIn</button>
   </div>
 </template>
 
@@ -33,8 +36,14 @@
 <script>
 import axios from 'axios';
 import axiosConfig from '../axios';
+import { mapState } from 'vuex';
 
 export default {
+  computed: {
+  ...mapState({
+    userData: state => state.user
+  })
+},
   data() {
     return {
       form : {
@@ -50,8 +59,7 @@ export default {
       try {
         const response = await axios.post(`${axiosConfig.baseURL}/login`, this.form);
         const token = response.data.access_token;
-        // localStorage.setItem('Bearer_token', token);
-        sessionStorage.setItem('Bearer_token', token);
+        this.$store.commit('setToken', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
         this.form.email = '';
@@ -59,7 +67,6 @@ export default {
         this.form.remember = false;
 
         this.errorMessages = [];
-        this.$router.push('/admin');
 
         // Fetch the user
         const user = response.data.user;
@@ -78,7 +85,20 @@ export default {
           this.errorMessages = ['Something went wrong'];
         }
       }
-    }
+    },
+    linkedinLogin() {
+      const clientId = '77qpmgymtgu6hy';
+      const redirectUri = 'http://localhost:8080/callback';
+      const state = 'dpjFfgNplIDtHCjf'; // generate a secure random string
+
+      const scope = 'r_liteprofile r_emailaddress';
+      const responseType = 'code';
+
+      const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`;
+
+      // Open LinkedIn authorization URL in a new window or redirect the current window
+      window.location.href = authUrl;
+    },
   }
 };
 </script>
@@ -116,7 +136,6 @@ export default {
 }
 
 .login-container .submit-btn {
-  width: 100%;
   padding: 10px;
   background-color: #3490dc;
   border: none;

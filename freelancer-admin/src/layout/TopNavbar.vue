@@ -16,9 +16,9 @@
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <router-link class="nav-link" :to="{ name: 'User' }">
               Account
-            </a>
+            </router-link>
           </li>
           <base-dropdown title="Dropdown">
             <a class="dropdown-item" href="#">Action</a>
@@ -56,7 +56,7 @@ import { logout } from '../auth';
     },
     methods: {
       handleLogout () {
-        logout()
+        logout(this.$router)
         this.$router.push({name: 'Login'})
       },
       capitalizeFirstLetter (string) {

@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'role',
         'password',
+        'linkedin_id',
+        'enum'
     ];
 
     /**
@@ -51,6 +53,11 @@ class User extends Authenticatable
     public function hasRole($role)
         {
             return $this->roles()->where('name', $role)->exists();
+        }
+
+    public function userData()
+        {
+            return $this->hasOne(UserData::class);
         }
 }
 

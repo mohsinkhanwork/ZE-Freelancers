@@ -3,9 +3,10 @@ module.exports = {
     env: {
       node: true,
     },
-    parserOptions: {
-      parser: 'babel-eslint',
-    },
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+      },
     rules: {
         "rule-to-turn-off": "off"
     },

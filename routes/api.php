@@ -23,4 +23,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', 'API\Auth\RegisterController@register')->name('register');
 Route::post('/login', 'API\Auth\RegisterController@login')->name('login');
-Route::get('/user', 'API\Auth\RegisterController@getUser')->name('user');
+Route::post('/linkedin-callback', 'API\Auth\RegisterController@linkedin_callback')->name('linkedin_callback');
+
+Route::put('/user/{id}', 'API\Auth\UserController@update')->name('user.update');
+Route::delete('/deleteUser', 'API\Auth\UserController@destroy')->name('user.destroy');
+Route::get('/get-users', 'API\Auth\UserController@index')->name('users.index');
+Route::get('/get-roles', 'API\Auth\UserController@indexRoles')->name('roles.index');
+Route::post('/add-roles', 'API\Auth\UserController@newRole')->name('roles.store');
+Route::post('/update-role', 'API\Auth\UserController@updateRole')->name('roles.update');
+Route::get('/get-user/{id}', 'API\Auth\UserController@show')->name('user.show');
+
+
