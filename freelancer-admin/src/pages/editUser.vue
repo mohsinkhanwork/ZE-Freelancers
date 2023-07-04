@@ -2,6 +2,9 @@
   <card>
     <h4 slot="header" class="card-title">Edit User info</h4>
     <form>
+      <div>
+        the user is not availble for further use
+      </div>
       <div class="row">
         <div class="col-md-5">
           <base-input type="text"
