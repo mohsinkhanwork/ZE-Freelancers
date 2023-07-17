@@ -13,7 +13,9 @@ export default new Vuex.Store({
       token: null,
       users: [],
       roles: [],
-      currentEditUser: null
+      currentEditUser: null,
+      currentUser: null,
+      loading: false
   },
   mutations: {
     setUser (state, user) {
@@ -31,17 +33,26 @@ export default new Vuex.Store({
     addRole (state, role) {
         state.roles.push(role);
     },
+    setLoading (state, loading) {
+        state.loading = loading;
+    },
     setCurrentEditUser (state, user) {
         state.currentEditUser = user;
+    },
+    setCurrentUser (state, user) {
+        state.currentUser = user;
     }
   },
 actions: {
   async updateUserProfile({commit}, userData) {
     let response;
+
     try {
+      console.log('userData', userData.id);
        response = await axios.put(`${axiosConfig.baseURL}/user/${userData.id}`, userData);
        if (response && response.status === 200) {
         commit('setUser', response.data);
+        commit('setCurrentUser', response.data);
         return response.data;
      }
     } catch (e) {
@@ -79,18 +90,21 @@ actions: {
     response = await axios.get(`${axiosConfig.baseURL}/add-roles`);
     commit('addRole', response.data);
   },
-  async fetchUserById({ commit }, user) {
+  async fetchUserById({ commit }, userId) {
     let response;
     try {
-       response = await axios.get(`${axiosConfig.baseURL}/get-user/${user.id}`);
-       commit('setCurrentEditUser', response.data);
+      commit('setLoading', true);
+       response = await axios.get(`${axiosConfig.baseURL}/get-user/${userId}`);
+       if (response && response.status === 200) {
+        commit('setCurrentEditUser', response.data);
+     }
     } catch (e) {
        console.error('Error getting user', e);
        throw e;
+    } finally {
+      commit('setLoading', false);
     }
-    if (response && response.status === 200) {
-       commit('setCurrentEditUser', response.data);
-    }
+
   }
 },
 

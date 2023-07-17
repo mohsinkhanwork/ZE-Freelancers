@@ -54,7 +54,14 @@ const routes = [
       {
         path: 'edit-user/:id',
         name: 'Edit User',
-        component: editUser
+        component: editUser,
+        meta : { editMode: true }
+      },
+      {
+        path: 'view-user/:id',
+        name: 'View User',
+        component: editUser,
+        meta : { editMode: false }
       },
     ]
   },

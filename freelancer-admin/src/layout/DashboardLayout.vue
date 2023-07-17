@@ -10,12 +10,12 @@
         <i class="nc-icon nc-circle-09"></i>
         <p>User Profile</p>
       </router-link>
-      <router-link v-if="user.role == 'admin'" class="sideBar"
+      <router-link v-if="currentUser && currentUser.user && currentUser.user.role == 'admin'" class="sideBar"
       to="/admin/user-management">
         <i class="nc-icon nc-notes"></i>
         <p>User Management</p>
       </router-link>
-      <router-link v-if="user.role == 'admin'" class="sideBar"
+      <router-link v-if="currentUser && currentUser.user && currentUser.user.role == 'admin'" class="sideBar"
       to="/admin/user-role">
         <i class="nc-icon nc-notes"></i>
         <p>Role Management</p>
@@ -44,9 +44,18 @@
   export default {
     computed: {
       ...mapState({
-        user: state => state.user
+        currentUser: state => state.currentUser
       })
     },
+
+    // watch: {
+    //   'user': {
+    //     handler(newUser) {
+    //       this.user = newUser
+    //     },
+    //     deep: true
+    //   }
+    // },
 
     data () {
       return {

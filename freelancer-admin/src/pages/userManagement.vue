@@ -25,13 +25,12 @@
                   <td>{{ user.email }}</td>
                   <td>{{ user.role }}</td>
                   <td>
-                    <router-link :to="{ name: 'Edit User', params: { id: user.id } }" class="btn btn-primary btn-sm">View</router-link>
+                    <router-link :to="{ name: 'View User', params: { id: user.id } }" class="btn btn-primary btn-sm">View</router-link>
                     <router-link :to="{ name: 'Edit User', params: { id: user.id } }" class="btn btn-warning btn-sm">Edit</router-link>
                     <button
-                    @click="deleteUser(user.id)"
-                    class="btn btn-danger btn-sm">Delete</button>
+                      @click="deleteUser(user.id)"
+                      class="btn btn-danger btn-sm">Delete</button>
                   </td>
-                  <!-- Other fields here -->
                 </tr>
               </tbody>
             </table>

@@ -29,10 +29,6 @@
   </div>
 </template>
 
-
-
-
-
 <script>
 import axios from 'axios';
 import axiosConfig from '../axios';
@@ -59,7 +55,6 @@ export default {
       try {
         const response = await axios.post(`${axiosConfig.baseURL}/login`, this.form);
         const token = response.data.access_token;
-        this.$store.commit('setToken', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
         this.form.email = '';
@@ -73,6 +68,8 @@ export default {
 
         // Save user data to state
         this.$store.commit('setUser', user);
+        this.$store.commit('setToken', token);
+        this.$store.commit('setCurrentUser', response.data);
 
         // Redirect
         this.$router.push('/admin');

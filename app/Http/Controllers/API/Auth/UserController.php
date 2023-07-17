@@ -112,7 +112,7 @@ class UserController extends Controller
             $user->email = $request->input('email');
             $user->save();
 
-            $updatedUser = User::with('userData') // Assuming the relation name is 'user_data'
+            $updatedUser = User::with('userData') // The relation name is 'user_data'
                             ->find($id);
 
         return response()->json($updatedUser, 200);

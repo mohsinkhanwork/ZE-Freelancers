@@ -57,7 +57,6 @@ import { logout } from '../auth';
     methods: {
       handleLogout () {
         logout(this.$router)
-        this.$router.push({name: 'Login'})
       },
       capitalizeFirstLetter (string) {
         return string.charAt(0).toUpperCase() + string.slice(1)

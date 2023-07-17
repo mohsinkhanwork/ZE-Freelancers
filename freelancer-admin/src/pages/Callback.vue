@@ -39,7 +39,7 @@ export default {
         const response = await axios.post(`${axiosConfig.baseURL}/linkedin-callback`, { code, state });
         const token = response.data.access_token;
 
-        sessionStorage.setItem('Bearer_token', token);
+        // sessionStorage.setItem('Bearer_token', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         this.loading = false;
          // Fetch the user
@@ -47,6 +47,7 @@ export default {
 
         // Save user data to state
         this.$store.commit('setUser', user);
+        this.$store.commit('setToken', token);
 
           // Redirect
           this.$router.push('/admin');
