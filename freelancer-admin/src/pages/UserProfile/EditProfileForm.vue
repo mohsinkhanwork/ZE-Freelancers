@@ -1,6 +1,10 @@
 <template>
   <card>
     <h4 slot="header" class="card-title">Edit Profile</h4>
+    <form @submit="formSubmit" enctype="multipart/form-data">
+                            <input type="file" class="form-control" v-on:change="onChange">
+                            <button class="btn btn-primary btn-block">Upload</button>
+    </form>
     <form>
       <div class="row">
         <div class="col-md-5">
@@ -125,6 +129,8 @@
 <script>
 import Card from 'src/components/Cards/Card.vue';
 import { mapState, mapActions } from 'vuex';
+import axios from 'axios';
+import axiosConfig from '../../axios.js';
 
 export default {
   computed: {
@@ -142,6 +148,9 @@ export default {
       loading: true,
       localUser: {
         id: '',
+        name: '',
+        email: '',
+        role: '',
         user_data: {
           company: '',
           first_name: '',
@@ -151,25 +160,46 @@ export default {
           country: '',
           postal_code: '',
           description: '',
+          image: '',
         },
-        name: '',
-        email: '',
+
       },
     };
   },
   methods: {
     ...mapActions(['updateUserProfile']),
+    onChange(e) {
+      const image = e.target.files[0];
+      this.localUser.user_data.image = image;
+    },
+    formSubmit(e) {
+      e.preventDefault();
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+      const formData = new FormData();
+      formData.append('image', this.localUser.user_data.image);
+      formData.append('id', this.localUser.id);
+      axios.post(`${axiosConfig.baseURL}/image-upload`, formData, config)
+        .then((response) => {
+          alert('The file is successfully uploaded');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async updateProfile() {
       try {
-        const updatedUser = await this.updateUserProfile(this.localUser);
-        this.$store.commit('setUser', updatedUser);
-        this.user = Object.assign({}, updatedUser);
+        const updatedUser = await this.$store.dispatch('updateUserProfile', this.localUser);
+        this.localUser = {...updatedUser};
         alert('Profile updated successfully');
       } catch (error) {
         console.log(error);
         alert('Error updating profile');
       }
-    },
+},
   },
   created() {
     if (this.stateUser) {
@@ -179,6 +209,7 @@ export default {
       }
       this.localUser.name = this.stateUser.name;
       this.localUser.email = this.stateUser.email;
+      this.localUser.role = this.stateUser.role;
     }
   },
   watch: {
@@ -192,6 +223,7 @@ export default {
           }
           this.localUser.name = newUser.name;
           this.localUser.email = newUser.email;
+          this.localUser.role = newUser.role;
         }
       },
       deep: true, // ensure watcher triggers for nested data changes

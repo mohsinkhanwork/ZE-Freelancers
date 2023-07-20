@@ -46,13 +46,28 @@ export default new Vuex.Store({
 actions: {
   async updateUserProfile({commit}, userData) {
     let response;
-
     try {
-      console.log('userData', userData.id);
        response = await axios.put(`${axiosConfig.baseURL}/user/${userData.id}`, userData);
        if (response && response.status === 200) {
         commit('setUser', response.data);
         commit('setCurrentUser', response.data);
+        return response.data;
+     }
+    } catch (e) {
+       console.error('Error updating user profile', e);
+       throw e;
+    }
+
+  },
+  async updateEachUserProfile({commit}, userData) {
+    let response;
+
+    try {
+       response = await axios.put(`${axiosConfig.baseURL}/user/${userData.id}`, userData);
+       if (response && response.status === 200) {
+        // commit('setUser', response.data);
+        commit('setCurrentEditUser', response.data);
+        alert("User updated successfully");
         return response.data;
      }
     } catch (e) {

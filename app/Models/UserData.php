@@ -13,6 +13,7 @@ class UserData extends Model
         'user_id',
         'first_name',
         'last_name',
+        'image',
         'company',
         'address',
         'city',

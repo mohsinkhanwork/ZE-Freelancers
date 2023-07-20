@@ -28,7 +28,7 @@ const SidebarPlugin = {
 
     Object.defineProperty(Vue.prototype, '$sidebar', {
       get () {
-        return this.$root.sidebarStore
+        return this.sidebarStore;
       }
     })
     Vue.component('side-bar', Sidebar)

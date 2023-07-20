@@ -32,5 +32,6 @@ Route::get('/get-roles', 'API\Auth\UserController@indexRoles')->name('roles.inde
 Route::post('/add-roles', 'API\Auth\UserController@newRole')->name('roles.store');
 Route::post('/update-role', 'API\Auth\UserController@updateRole')->name('roles.update');
 Route::get('/get-user/{id}', 'API\Auth\UserController@show')->name('user.show');
+Route::post('/image-upload', 'API\Auth\UserController@imageUpload')->name('user.imageUpload');
 
 

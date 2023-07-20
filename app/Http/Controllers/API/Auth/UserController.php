@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\UserData;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 
 class UserController extends Controller
@@ -81,42 +83,52 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $user = User::find($id);
+{
+    $user = User::find($id);
 
-        if (!$user) {
-            return response([
-                'error' => 'User not found'
-            ], 404);
-        }
-
-        $user_data = UserData::where('user_id', $id)
-                    ->first();
-
-        if(!$user_data) {
-            $user_data = new UserData();
-            $user_data->user_id = $id;
-        }
-
-            $user_data->first_name = $request->input('user_data.first_name');
-            $user_data->last_name = $request->input('user_data.last_name');
-            $user_data->company = $request->input('user_data.company');
-            $user_data->address = $request->input('user_data.address');
-            $user_data->city = $request->input('user_data.city');
-            $user_data->country = $request->input('user_data.country');
-            $user_data->postal_code = $request->input('user_data.postal_code');
-            $user_data->description = $request->input('user_data.description');
-            $user_data->save();
-
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            $user->save();
-
-            $updatedUser = User::with('userData') // The relation name is 'user_data'
-                            ->find($id);
-
-        return response()->json($updatedUser, 200);
+    if (!$user) {
+        return response([
+            'error' => 'User not found'
+        ], 404);
     }
+
+    $user_data = UserData::where('user_id', $id)->first();
+
+    if(!$user_data) {
+        $user_data = new UserData();
+        $user_data->user_id = $id;
+    }
+
+    $input_user_data = $request->input('user_data');  // Fetch user_data object once
+
+    $user_data->first_name = $input_user_data['first_name'];
+    $user_data->last_name = $input_user_data['last_name'];
+    $user_data->company = $input_user_data['company'];
+    $user_data->address = $input_user_data['address'];
+    $user_data->city = $input_user_data['city'];
+    $user_data->country = $input_user_data['country'];
+    $user_data->postal_code = $input_user_data['postal_code'];
+    $user_data->description = $input_user_data['description'];
+    $user_data->save();
+
+    try {
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->save();
+
+        $updatedUser = User::with('userData') // The relation name is 'user_data'
+                        ->find($id);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error updating the profile: ' . $e->getMessage()
+        ], 400);
+    }
+
+
+    return response()->json($updatedUser, 200);
+}
+
 
     /**
      * Remove the specified resource from storage.
@@ -181,6 +193,35 @@ class UserController extends Controller
                 ->update([
                     'role' => $request->role
                 ]);
+        }
+
+        public function imageUpload(Request $request)
+        {
+            $request->validate([
+                'id' => 'required',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            $imageName = time().'.'.$request->image->getClientOriginalName();
+            $request->image->move(public_path('images/users'), $imageName);
+
+            $user = User::with('userData')->find($request->id);
+            if($user){
+                $user->userData->image = $imageName;
+                $user->userData->save();
+                return response()->json([
+                    'success' => true,
+                    'user' => $user,
+                    'message' => $imageName
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found'
+                ]);
+            }
+
+
         }
 
 

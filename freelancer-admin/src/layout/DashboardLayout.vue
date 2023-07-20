@@ -8,14 +8,14 @@
       </router-link>
       <router-link to="/admin/user" class="sideBar">
         <i class="nc-icon nc-circle-09"></i>
-        <p>User Profile</p>
+        <p>Profile</p>
       </router-link>
-      <router-link v-if="currentUser && currentUser.user && currentUser.user.role == 'admin'" class="sideBar"
+      <router-link v-if="isAdmin"  class="sideBar"
       to="/admin/user-management">
         <i class="nc-icon nc-notes"></i>
-        <p>User Management</p>
+        <p>Employees</p>
       </router-link>
-      <router-link v-if="currentUser && currentUser.user && currentUser.user.role == 'admin'" class="sideBar"
+      <router-link v-if="isAdmin" class="sideBar"
       to="/admin/user-role">
         <i class="nc-icon nc-notes"></i>
         <p>Role Management</p>
@@ -45,7 +45,12 @@
     computed: {
       ...mapState({
         currentUser: state => state.currentUser
-      })
+      }),
+      isAdmin () {
+        return (
+          this.currentUser && this.currentUser.role === 'admin'
+      );
+      }
     },
 
     // watch: {

@@ -1,33 +1,210 @@
 <template>
-  <div class="login-container">
-    <h2>Login</h2>
-    <div class="error-message" v-for="errorMessage in errorMessages" :key="errorMessage">
+  <div class="app-container">
+
+    <div class="login-container">
+      <div class="logo-section">
+        <img src="/img/clock.svg" alt="clock" class="logo-img" />
+        <div class="logo-text">
+          <div class="logo-text-part">Zeiten</div>
+          <div class="logo-text-part logo-text-part-black">Erfassen</div>
+        </div>
+      </div>
+      <span class="login-header">Login</span>
+      <div v-for="errorMessage in errorMessages" :key="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
-    <form @submit.prevent="login">
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="form.email" required>
+      <form @submit.prevent="login" class="login-form">
+        <div class="input-group">
+          <label for="email" class="input-label">Email</label>
+          <input type="email" v-model="form.email" class="input-field" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+          <label for="password" class="input-label">Password</label>
+          <input type="password" v-model="form.password" class="input-field" placeholder="Password" required>
+        </div>
+        <button type="submit" class="submit-btn">Login</button>
+      </form>
+      <div class="separator">OR</div>
+      <div class="social-box">
+        <div class="social-login">
+        <img src="/img/linkdin.svg" alt="LinkedIn" class="social-logo" />
+        <button @click="linkedinLogin" class="social-btn">Login via LinkedIn</button>
       </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="form.password" required>
       </div>
-      <!-- <div class="form-group">
-        <label for="remember">Remember Me:</label>
-        <input type="checkbox" id="remember" v-model="form.remember" style="width: 41px;">
-      </div> -->
-      <div class="form-group" style="text-align: center;">
-      <button type="submit" class="submit-btn">Login</button>
+
+      <div class="register-section">
+        <span class="register-text">new User?</span>
+        <router-link to="/register" class="register-link">
+          Register Now
+        </router-link>
+      </div>
     </div>
-    </form>
-    <hr>
-    <router-link to="/register">
-      Register Here
-    </router-link>
-    <button @click="linkedinLogin" class="linkedin-btn submit-btn">Login with LinkedIn</button>
   </div>
 </template>
+
+<style scoped>
+.error-message {
+  color: red;
+}
+.input-label {
+  font-family: system-ui;
+  background: white;
+  padding-left: 3px;
+}
+.social-box {
+  display: flex;
+  justify-content: center;
+}
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background: #F7F7F7;
+  overflow: auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 490px;
+  width: 100%;
+  max-height: 90vh;
+  box-sizing: border-box;
+  padding: 1rem;
+}
+.logo-section {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.logo-img {
+  height: 50px;
+  width: 50px;
+}
+.logo-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2E4EAC;
+  font-size: 38.20px;
+  font-family: Montserrat;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.logo-text-part-black {
+  color: black;
+}
+.login-header {
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
+
+}
+.login-form {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.input-group {
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.input-field {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    background: #F7F7F7;
+}
+.submit-btn {
+  color: white;
+    font-size: 21px;
+    border: none;
+    background: #2271B1;
+    border-radius: 10px;
+    padding: 7px 19px 7px 19px;
+}
+.separator {
+  color: black;
+  font-size: 16px;
+  font-family: Poppins;
+  font-weight: 400;
+  text-transform: capitalize;
+  margin-top: 30px;
+  text-align: center;
+}
+.social-login {
+    display: flex;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background: #0077B5;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+    width: 75%;
+}
+.social-logo {
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+}
+.social-btn {
+  color: white;
+  font-size: 21px;
+  font-weight: 500;
+  border: none;
+  background: none;
+}
+.register-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+.register-text {
+  color: black;
+  font-size: 16px;
+  font-family: Poppins;
+  font-weight: 400;
+  text-transform: capitalize;
+  margin-right: 10px;
+}
+.register-link {
+  color: #0076B2;
+  font-size: 16px;
+  font-family: Poppins;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+@media (max-width: 600px) {
+  .logo-text {
+    font-size: 24px;
+  }
+  .login-header {
+    font-size: 30px;
+  }
+  .login-form {
+    padding: 8px;
+  }
+  .input-field {
+    height: 50px;
+  }
+  .submit-btn, .social-btn {
+    font-size: 18px;
+  }
+  .separator {
+    font-size: 14px;
+  }
+  .register-text, .register-link {
+    font-size: 14px;
+  }
+}
+</style>
 
 <script>
 import axios from 'axios';
@@ -69,7 +246,8 @@ export default {
         // Save user data to state
         this.$store.commit('setUser', user);
         this.$store.commit('setToken', token);
-        this.$store.commit('setCurrentUser', response.data);
+        // this.$store.commit('setCurrentUser', response.data); old
+        this.$store.commit('setCurrentUser', this.userData);
 
         // Redirect
         this.$router.push('/admin');
@@ -100,61 +278,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.login-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #f7f7f7;
-}
 
-.login-container form {
-  width: 100%;
-  max-width: 300px;
-  padding: 20px;
-  background: white;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.login-container label {
-  font-weight: bold;
-  color: #555;
-}
-
-.login-container input {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 100%;
-}
-
-.login-container .submit-btn {
-  padding: 10px;
-  background-color: #3490dc;
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-.login-container .submit-btn:hover {
-  background-color: #227dc7;
-}
-
-.login-container hr {
-  margin: 20px 0;
-}
-
-.login-container a {
-  color: #3490dc;
-}
-
-.error-message {
-  color: red;
-}
-</style>

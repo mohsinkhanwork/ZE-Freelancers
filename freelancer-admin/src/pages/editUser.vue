@@ -91,7 +91,7 @@
         </div>
       </div>
       <div class="text-center">
-        <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="updateUserProfile"
+        <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="submitUpdateUserProfile"
         v-if="$route.meta.editMode"
         >
           Update Profile
@@ -119,49 +119,62 @@
     },
 
     data () {
-      return {
-      }
     },
 
-    async created () {
-      const userId = this.$route.params.id;
-      this.$store.commit('setCurrentEditUser', {
-      user_data : {
-        company: '',
-        first_name: '',
-        last_name: '',
-        address: '',
-        city: '',
-        country: '',
-        postal_code: '',
-        description: '',
-      },
-      name: '',
-      email: '',
-      }),
-      await this.$store.dispatch('fetchUserById', userId);
+    async created() {
+  const userId = this.$route.params.id;
+  console.log('userId', userId);
+  this.$store.commit('setCurrentEditUser', {
+    user_data: {
+      company: '',
+      first_name: '',
+      last_name: '',
+      address: '',
+      city: '',
+      country: '',
+      postal_code: '',
+      description: '',
     },
+    name: '',
+    email: '',
+  });
+
+  try {
+    const user = await this.$store.dispatch('fetchUserById', userId);
+    if(user) {
+      // Create a copy of the user object before committing to Vuex state
+      this.$store.commit('setCurrentEditUser', { ...user });
+    } else {
+      console.error('Unable to fetch user by ID');
+    }
+  } catch(err) {
+    console.error('Error fetching user by ID', err);
+  }
+},
 
     methods: {
-      ...mapActions(['getUser']),
-      async updateUserProfile() {
+      ...mapActions(['updateEachUserProfile']),
+      async submitUpdateUserProfile() {
         try {
-        const updatedUser = await this.$store.dispatch('updateUserProfile', this.currentEditUser);
-        alert('User updated successfully');
+          await this.updateEachUserProfile(this.user);
         } catch (error) {
-         alert('Error updating user', error);
+         alert('Error updating user');
+         console.error(error);
         }
       },
     },
 
     watch: {
-  'user': {
-    handler(newUser) {
-        this.user = newUser; // update local data when Vuex state changes
-    },
-    deep: true // ensure watcher triggers for nested data changes
-  }
+    'user': {
+      handler(newUser, oldUser) {
+        if (JSON.stringify(newUser) !== JSON.stringify(oldUser)) {
+          // perform some action in response to the change in user
+        }
+      },
+      deep: true // ensure watcher triggers for nested data changes
+    }
 },
+
 
 
 
