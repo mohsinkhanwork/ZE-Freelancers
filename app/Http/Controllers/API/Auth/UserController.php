@@ -202,8 +202,11 @@ class UserController extends Controller
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            $imageName = time().'.'.$request->image->getClientOriginalName();
-            $request->image->move(public_path('images/users'), $imageName);
+            $image = $request->file('image');
+            $imageName = time().'.'.$image->getClientOriginalName();
+            $image->move(public_path('img/faces'), $imageName);
+
+            $imageURL = asset('img/faces/' . $imageName);
 
             $user = User::with('userData')->find($request->id);
             if($user){
@@ -212,8 +215,11 @@ class UserController extends Controller
                 return response()->json([
                     'success' => true,
                     'user' => $user,
+                    'image' => $imageName,
+                    'imageURL' => $imageURL,
                     'message' => $imageName
-                ]);
+                  ]);
+
             } else {
                 return response()->json([
                     'success' => false,
@@ -222,6 +228,27 @@ class UserController extends Controller
             }
 
 
+        }
+
+        public function getUserImage($id) {
+            $user = User::with('userData')->find($id);
+            if($user){
+                $path = base_path('freelancer-admin/public/img/faces/'.$user->userData->image);
+
+                if(file_exists($path)){
+                    return response()->file($path);
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Image not found'
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ]);
         }
 
 

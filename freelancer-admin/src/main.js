@@ -17,6 +17,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App.vue";
 import store  from "./store";
+import '../src/assets/main.css';
 
 // LightBootstrap plugin
 import LightBootstrap from "./light-bootstrap-main";

@@ -2,8 +2,18 @@
   <card>
     <h4 slot="header" class="card-title">Edit Profile</h4>
     <form @submit="formSubmit" enctype="multipart/form-data">
-                            <input type="file" class="form-control" v-on:change="onChange">
-                            <button class="btn btn-primary btn-block">Upload</button>
+        <div class="profile-pic">
+          <div class="image-wrapper">
+            <img v-if="imageUrl" :src="imageUrl" alt="Profile Image" class="profile-pic-img">
+          </div>
+        </div>
+        <div class="button-wrapper">
+            <button class="img-btn upload-btn">Upload Image</button>
+            <label class="img-btn1 choose-btn form-control" v-on:change="onChange">
+                Choose Image
+                <input type="file" style="display: none;">
+            </label>
+        </div>
     </form>
     <form>
       <div class="row">
@@ -137,6 +147,9 @@ export default {
     ...mapState({
       stateUser: (state) => state.user,
     }),
+    imagePath() {
+      return this.localUser && this.localUser.user_data ? '/img/faces/' + this.localUser.user_data.image : '';
+    }
   },
 
   components: {
@@ -146,6 +159,7 @@ export default {
     return {
       // user: this.$store.state.user,
       loading: true,
+      imageUrl: '',
       localUser: {
         id: '',
         name: '',
@@ -171,6 +185,7 @@ export default {
     onChange(e) {
       const image = e.target.files[0];
       this.localUser.user_data.image = image;
+      this.imageUrl = URL.createObjectURL(image);
     },
     formSubmit(e) {
       e.preventDefault();
@@ -185,6 +200,11 @@ export default {
       axios.post(`${axiosConfig.baseURL}/image-upload`, formData, config)
         .then((response) => {
           alert('The file is successfully uploaded');
+          this.localUser.user_data.image = response.data.image;
+          this.imageUrl = response.data.imageURL;
+
+          this.$store.commit('setUser', { ...this.stateUser, user_data: { ...this.stateUser.user_data, image: response.data.imageURL }});
+          this.$store.dispatch('updateUserProfile', { ...this.localUser, user_data: { ...this.localUser.user_data, image: response.data.imageURL }});
         })
         .catch((error) => {
           console.log(error);
@@ -202,16 +222,20 @@ export default {
 },
   },
   created() {
-    if (this.stateUser) {
-      this.localUser.id = this.stateUser.id;
-      if (this.stateUser.user_data) {
-        this.localUser.user_data = Object.assign({}, this.stateUser.user_data);
-      }
-      this.localUser.name = this.stateUser.name;
-      this.localUser.email = this.stateUser.email;
-      this.localUser.role = this.stateUser.role;
+  if (this.stateUser) {
+    this.localUser.id = this.stateUser.id;
+    if (this.stateUser.user_data) {
+      this.localUser.user_data = Object.assign({}, this.stateUser.user_data);
     }
-  },
+    this.localUser.name = this.stateUser.name;
+    this.localUser.email = this.stateUser.email;
+    this.localUser.role = this.stateUser.role;
+    if(this.stateUser.user_data && this.stateUser.user_data.image) {
+      this.imageUrl = this.imageUrl = `http://localhost:8000/img/faces/${this.stateUser.user_data.image}`;
+    }
+  }
+},
+
   watch: {
     stateUser: {
       // watch it
@@ -224,6 +248,9 @@ export default {
           this.localUser.name = newUser.name;
           this.localUser.email = newUser.email;
           this.localUser.role = newUser.role;
+          if(newUser.user_data && newUser.user_data.image) {
+            this.imageUrl = this.imageUrl = `http://localhost:8000/img/faces/${this.stateUser.user_data.image}`;
+          }
         }
       },
       deep: true, // ensure watcher triggers for nested data changes
@@ -231,4 +258,46 @@ export default {
   },
 };
 </script>
-<style></style>
+
+
+<style>
+.profile-pic {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid #FF6347;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.profile-pic img {
+  width: 100%;
+  height: auto;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+
+.img-btn, .img-btn1 {
+  padding: 10px 20px;
+  color: white;
+  font-size: 0.9em;
+  border: none;
+  cursor: pointer;
+}
+
+.upload-btn {
+  background-color: red;
+}
+
+.choose-btn {
+  background-color: blue;
+}
+
+</style>
