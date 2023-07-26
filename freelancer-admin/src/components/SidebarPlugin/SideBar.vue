@@ -1,12 +1,9 @@
 <template>
-  <div class="sidebar"
-       :style="sidebarStyle"
-       :data-color="backgroundColor"
-       :data-image="backgroundImage">
-    <div class="sidebar-wrapper">
+  <div class="sidebar">
+    <div class="sidebar-wrapper bg-indigo-900">
       <div class="logo">
         <a href="#" class="simple-text logo__container">
-          Free Lancers
+          Zeiten Erfassan
         </a>
       </div>
 
@@ -79,7 +76,7 @@
     computed: {
       sidebarStyle () {
         return {
-          backgroundImage: `url(${this.backgroundImage})`
+
         }
       }
     }

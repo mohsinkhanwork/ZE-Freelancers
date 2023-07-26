@@ -1,67 +1,128 @@
 <template>
   <div class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-xl-3 col-md-6">
-          <stats-card>
-            <div slot="header" class="icon-warning">
-              <i class="nc-icon nc-chart text-warning"></i>
-            </div>
-            <div slot="content">
-              <p class="card-category">Capacity</p>
-              <h4 class="card-title">105GB</h4>
-            </div>
-            <div slot="footer">
-              <i class="fa fa-refresh"></i>Updated now
-            </div>
-          </stats-card>
-        </div>
+    <div class="col-lg-12 position-relative z-index-2">
+                      <div class="card card-plain mb-4">
+                        <div class="card-body p-3">
+                            <div class="row">
+                              <div class="col-lg-6">
+                                  <div class="d-flex flex-column h-100">
+                                    <h2 class="font-weight-bolder mb-0">General Statistics</h2>
+    </div>
 
-        <div class="col-xl-3 col-md-6">
-          <stats-card>
-            <div slot="header" class="icon-success">
-              <i class="nc-icon nc-light-3 text-success"></i>
             </div>
-            <div slot="content">
-              <p class="card-category">Revenue</p>
-              <h4 class="card-title">$1,345</h4>
-            </div>
-            <div slot="footer">
-              <i class="fa fa-calendar-o"></i>Last day
-            </div>
-          </stats-card>
+          </div>
         </div>
-        <div class="col-xl-3 col-md-6">
-          <stats-card>
-            <div slot="header" class="icon-danger">
-              <i class="nc-icon nc-vector text-danger"></i>
-            </div>
-            <div slot="content">
-              <p class="card-category">Errors</p>
-              <h4 class="card-title">23</h4>
-            </div>
-            <div slot="footer">
-              <i class="fa fa-clock-o"></i>Last day
-            </div>
-          </stats-card>
-        </div>
-
-        <div class="col-xl-3 col-md-6">
-          <stats-card>
-            <div slot="header" class="icon-info">
-              <i class="nc-icon nc-favourite-28 text-primary"></i>
-            </div>
-            <div slot="content">
-              <p class="card-category">Followers</p>
-              <h4 class="card-title">+45</h4>
-            </div>
-            <div slot="footer">
-              <i class="fa fa-refresh"></i>Updated now
-            </div>
-          </stats-card>
-        </div>
-
       </div>
+
+      <div class="row">
+        <div class="col-lg-5 col-sm-5">
+          <div class="card  mb-2">
+    <div class="card-header p-3 pt-2">
+      <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
+        <i class="material-icons opacity-10">weekend</i>
+      </div>
+      <div class="text-end pt-1">
+        <p class="text-sm mb-0 text-capitalize">Pluse</p>
+        <h4 class="mb-0">281</h4>
+      </div>
+    </div>
+
+    <hr class="dark horizontal my-0">
+    <div class="card-footer p-3">
+
+    </div>
+    </div>
+
+          <div class="card  mb-2 mt-5">
+    <div class="card-header p-3 pt-2">
+      <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary shadow text-center border-radius-xl mt-n4 position-absolute">
+        <i class="material-icons opacity-10">leaderboard</i>
+      </div>
+      <div class="text-end pt-1">
+        <p class="text-sm mb-0 text-capitalize">Absent</p>
+        <h4 class="mb-0">2,300</h4>
+      </div>
+    </div>
+
+    <hr class="dark horizontal my-0">
+    <div class="card-footer p-3">
+
+    </div>
+    </div>
+
+        <div class="card  mb-2 mt-5">
+    <div class="card-header p-3 pt-2">
+      <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary shadow text-center border-radius-xl mt-n4 position-absolute">
+        <i class="material-icons opacity-10">leaderboard</i>
+      </div>
+      <div class="text-end pt-1">
+        <p class="text-sm mb-0 text-capitalize">Open Application</p>
+        <h4 class="mb-0">2,300</h4>
+      </div>
+    </div>
+
+    <hr class="dark horizontal my-0">
+    <div class="card-footer p-3">
+
+    </div>
+    </div></div>
+
+      <div class="col-lg-5 col-sm-5 mt-sm-0 mt-4">
+          <div class="card  mb-2">
+    <div class="card-header p-3 pt-2 bg-transparent">
+      <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+        <i class="material-icons opacity-10">store</i>
+      </div>
+      <div class="text-end pt-1">
+        <p class="text-sm mb-0 text-capitalize ">Add Employee</p>
+        <h4 class="mb-0 ">34k</h4>
+      </div>
+    </div>
+
+    <hr class="horizontal my-0 dark">
+    <div class="card-footer p-3">
+
+    </div>
+    </div>
+
+          <div class="card mt-5 ">
+    <div class="card-header p-3 pt-2 bg-transparent">
+      <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+        <i class="material-icons opacity-10">person_add</i>
+      </div>
+      <div class="text-end pt-1">
+        <p class="text-sm mb-0 text-capitalize ">Live overview</p>
+        <h4 class="mb-0 ">+91</h4>
+      </div>
+    </div>
+
+    <hr class="horizontal my-0 dark">
+    <div class="card-footer p-3">
+
+    </div>
+    </div>
+
+        <div class="card mt-5 ">
+    <div class="card-header p-3 pt-2 bg-transparent">
+      <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+        <i class="material-icons opacity-10">person_add</i>
+      </div>
+      <div class="text-end pt-1">
+        <p class="text-sm mb-0 text-capitalize ">News</p>
+        <h4 class="mb-0 ">+91</h4>
+      </div>
+    </div>
+
+    <hr class="horizontal my-0 dark">
+    <div class="card-footer p-3">
+
+    </div>
+      </div>
+      </div>
+    </div>
+
+
+
     </div>
   </div>
 </template>

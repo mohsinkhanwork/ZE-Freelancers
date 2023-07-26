@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg">
+  <nav class="navbar navbar-expand-lg ml-4 mr-4 rounded-xl">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Dashboard</a>
       <button type="button"

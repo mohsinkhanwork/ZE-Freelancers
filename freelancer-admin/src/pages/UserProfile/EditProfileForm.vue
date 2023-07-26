@@ -1,21 +1,18 @@
 <template>
   <card>
     <h4 slot="header" class="card-title">Edit Profile</h4>
-    <form @submit="formSubmit" enctype="multipart/form-data">
-        <div class="profile-pic">
+    <form enctype="multipart/form-data">
+      <div class="profile-pic">
           <div class="image-wrapper">
             <img v-if="imageUrl" :src="imageUrl" alt="Profile Image" class="profile-pic-img">
           </div>
         </div>
-        <div class="button-wrapper">
-            <button class="img-btn upload-btn">Upload Image</button>
-            <label class="img-btn1 choose-btn form-control" v-on:change="onChange">
+        <div>
+            <label class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:change="onChange">
                 Choose Image
                 <input type="file" style="display: none;">
             </label>
         </div>
-    </form>
-    <form>
       <div class="row">
         <div class="col-md-5">
           <base-input
@@ -187,39 +184,40 @@ export default {
       this.localUser.user_data.image = image;
       this.imageUrl = URL.createObjectURL(image);
     },
-    formSubmit(e) {
-      e.preventDefault();
-      const config = {
-        headers: {
-          'content-type': 'multipart/form-data',
-        },
-      };
-      const formData = new FormData();
-      formData.append('image', this.localUser.user_data.image);
-      formData.append('id', this.localUser.id);
-      axios.post(`${axiosConfig.baseURL}/image-upload`, formData, config)
-        .then((response) => {
-          alert('The file is successfully uploaded');
-          this.localUser.user_data.image = response.data.image;
-          this.imageUrl = response.data.imageURL;
-
-          this.$store.commit('setUser', { ...this.stateUser, user_data: { ...this.stateUser.user_data, image: response.data.imageURL }});
-          this.$store.dispatch('updateUserProfile', { ...this.localUser, user_data: { ...this.localUser.user_data, image: response.data.imageURL }});
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
     async updateProfile() {
       try {
+        const config = {
+          headers: {
+            'content-type': 'multipart/form-data',
+          },
+        };
+        const formData = new FormData();
+
+        // Check if image exists before appending to formData
+        if (this.localUser.user_data.image && typeof this.localUser.user_data.image !== "string") {
+          formData.append('image', this.localUser.user_data.image);
+        }
+
+        formData.append('id', this.localUser.id);
+
+        if (formData.has('image')) { // Only make image upload request if image is present
+          const imageResponse = await axios.post(`${axiosConfig.baseURL}/image-upload`, formData, config);
+          this.localUser.user_data.image = imageResponse.data.image;
+          this.imageUrl = imageResponse.data.imageURL;
+          this.$store.commit('setUser', { ...this.stateUser, user_data: { ...this.stateUser.user_data, image: imageResponse.data.imageURL } });
+        }
+
+        // Now update the rest of the profile
         const updatedUser = await this.$store.dispatch('updateUserProfile', this.localUser);
-        this.localUser = {...updatedUser};
+        this.localUser = { ...updatedUser };
+
         alert('Profile updated successfully');
       } catch (error) {
         console.log(error);
         alert('Error updating profile');
       }
-},
+    },
+
   },
   created() {
   if (this.stateUser) {
@@ -249,7 +247,7 @@ export default {
           this.localUser.email = newUser.email;
           this.localUser.role = newUser.role;
           if(newUser.user_data && newUser.user_data.image) {
-            this.imageUrl = this.imageUrl = `http://localhost:8000/img/faces/${this.stateUser.user_data.image}`;
+            this.imageUrl =  `http://localhost:8000/img/faces/${this.stateUser.user_data.image}`;
           }
         }
       },
