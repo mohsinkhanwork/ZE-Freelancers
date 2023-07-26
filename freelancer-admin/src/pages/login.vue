@@ -3,7 +3,9 @@
 
     <div class="login-container">
       <div class="logo-section">
-        <img src="/img/clock.svg" alt="clock" class="logo-img" />
+        <div class="justify-center flex">
+          <img src="/img/clock.svg" alt="clock" class="logo-img" />
+        </div>
         <div class="logo-text">
           <div class="logo-text-part">Zeiten</div>
           <div class="logo-text-part logo-text-part-black">Erfassen</div>

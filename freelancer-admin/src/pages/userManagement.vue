@@ -4,9 +4,16 @@
       <div class="row">
         <div class="col-12">
           <card class="card table-striped table-responsive">
-            <template slot="header">
-              <h4 class="card-title">All Users</h4>
-            </template>
+            <div class="card-header flex p-0">
+              <div class="p-2">
+                <h4 class="card-title">
+                  All Users
+                </h4>
+              </div>
+              <div class="ml-auto p-2">
+                <router-link :to="{ name: 'Add User'}" class="btn btn-primary btn-sm active">+ Add an Employee</router-link>
+              </div>
+            </div>
             <table class="table">
               <thead class="thead-light">
                 <tr>
@@ -15,7 +22,6 @@
                   <th>Email</th>
                   <th>Role</th>
                   <th>Actions</th>
-                  <!-- Other columns here -->
                 </tr>
               </thead>
               <tbody>

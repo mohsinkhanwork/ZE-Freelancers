@@ -12,6 +12,7 @@ import Register from 'src/pages/Register.vue'
 import Callback from 'src/pages/Callback.vue'
 import store from '../store/index.js';
 import editUser from "src/pages/editUser";
+import addUser from "src/pages/addUser";
 
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
         name: 'Edit User',
         component: editUser,
         meta : { editMode: true }
+      },
+      {
+        path: 'add-user',
+        name: 'Add User',
+        component: addUser,
       },
       {
         path: 'view-user/:id',

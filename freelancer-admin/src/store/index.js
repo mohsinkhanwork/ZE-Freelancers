@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistedState from 'vuex-persistedstate';
-
 import axios from 'axios';
 import axiosConfig from '../axios.js';
 
@@ -44,6 +43,22 @@ export default new Vuex.Store({
     }
   },
 actions: {
+  async addNewUserToServer({commit}, userData) {
+    let response;
+    try {
+        response = await axios.post(`${axiosConfig.baseURL}/add-user`, userData);
+        if (response && response.status === 200) {
+          commit('setUser', response.data);
+          commit('setCurrentUser', response.data);
+          return response.data;
+        }
+    } catch (e) {
+        console.error('Error adding new user', e);
+        throw e;
+    } finally {
+      commit('setLoading', false);
+    }
+  },
   async updateUserProfile({commit}, userData) {
     let response;
     try {
@@ -122,6 +137,5 @@ actions: {
 
   }
 },
-
   plugins: [VuexPersistedState()]
 });
