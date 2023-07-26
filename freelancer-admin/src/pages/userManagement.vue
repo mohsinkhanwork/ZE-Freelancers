@@ -11,7 +11,7 @@
                 </h4>
               </div>
               <div class="ml-auto p-2">
-                <router-link :to="{ name: 'Add User'}" class="btn btn-primary btn-sm active">+ Add an Employee</router-link>
+                <router-link :to="{ name: 'Add User'}" class="btn btn-primary btn-sm active"> + Add an Employee</router-link>
               </div>
             </div>
             <table class="table">
