@@ -24,10 +24,10 @@ class UserController extends Controller
         return User::with('userData')->get();
     }
     public function indexRoles()
-        {
-            $roles = Role::all();
-            return response()->json($roles);
-        }
+    {
+        $roles = Role::all();
+        return response()->json($roles);
+    }
 
 
     /**
@@ -46,9 +46,41 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserData $userData, Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|min:8',
+            'role' => 'required|string|max:255',
+        ]);
+
+        $user = new User([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => bcrypt($request->password)
+        ]);
+
+        $user->save();
+
+        $userData->user_id = $user->id;
+        $userData->first_name = $request->user_data['first_name'];
+        $userData->last_name = $request->user_data['last_name'];
+        $userData->company = $request->user_data['company'];
+        $userData->address = $request->user_data['address'];
+        $userData->city = $request->user_data['city'];
+        $userData->country = $request->user_data['country'];
+        $userData->postal_code = $request->user_data['postal_code'];
+        $userData->description = $request->user_data['description'];
+        $userData->save();
+
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+            'user_data' => $userData,
+            'message' => 'User created successfully'
+        ], 201);
     }
 
     /**
