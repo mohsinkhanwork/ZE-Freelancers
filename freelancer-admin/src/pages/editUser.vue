@@ -1,5 +1,10 @@
 <template>
   <div v-if="loading">Loading...</div>
+  <div v-else-if="!user || !user.user_data">
+    <p>No user data available.</p>
+</div>
+
+
   <card v-else>
     <h4 slot="header" class="card-title">Edit User info</h4>
     <form>
@@ -8,8 +13,7 @@
           <base-input type="text"
                     label="Company"
                     placeholder="Light dashboard"
-                    v-model="user.user_data.company
-                    ">
+                    v-model="user.user_data.company">
           </base-input>
         </div>
         <div class="col-md-3">
@@ -78,7 +82,14 @@
           </base-input>
         </div>
       </div>
-
+      <div class="row">
+        <div class="col-md-12">
+          <select class="form-control" v-model="user.role">
+          <option disabled value="">Please assign role</option>
+          <option v-for="role in roles" :key="role.id" :value="role.name">{{ role.name }}</option>
+        </select>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
@@ -92,8 +103,7 @@
       </div>
       <div class="text-center">
         <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="submitUpdateUserProfile"
-        v-if="$route.meta.editMode"
-        >
+        v-if="$route.meta.editMode">
           Update Profile
         </button>
       </div>
@@ -107,10 +117,14 @@
 
   export default {
     computed: {
-      ...mapState(['loading', 'currentEditUser']),
+      ...mapState(['loading', 'currentEditUser', 'roles']),
       user: {
         get() {
-          return this.$store.state.currentEditUser;
+          let user = this.$store.state.currentEditUser;
+          if (!user.user_data && user.userData) {
+            user.user_data = user.userData;
+          }
+          return user;
         },
         set(newUser) {
           this.$store.commit('setCurrentEditUser', newUser);
@@ -118,26 +132,52 @@
       }
     },
 
-    data () {
-    },
+    state: {
+      currentEditUser: {
+        user_data: {
+          company: '',
+          first_name: '',
+          last_name: '',
+          address: '',
+          city: '',
+          country: '',
+          postal_code: '',
+          description: '',
+        },
+        name: '',
+        email: '',
+      },
+},
+
+  data () {
+    return {
+        error: null,
+    };
+  },
+
 
     async created() {
-  const userId = this.$route.params.id;
-  console.log('userId', userId);
-  this.$store.commit('setCurrentEditUser', {
-    user_data: {
-      company: '',
-      first_name: '',
-      last_name: '',
-      address: '',
-      city: '',
-      country: '',
-      postal_code: '',
-      description: '',
-    },
-    name: '',
-    email: '',
-  });
+        const roles = await this.getAllRoles();
+        console.log('roles', roles);
+        if(roles && roles.length) {
+          this.roles = roles;
+        }
+        const userId = this.$route.params.id;
+        this.$store.commit('setCurrentEditUser', {
+        user_data: {
+          company: '',
+          first_name: '',
+          last_name: '',
+          address: '',
+          city: '',
+          country: '',
+          postal_code: '',
+          description: '',
+        },
+        name: '',
+        email: '',
+        role: '',
+      });
 
   try {
     const user = await this.$store.dispatch('fetchUserById', userId);
@@ -148,12 +188,13 @@
       console.error('Unable to fetch user by ID');
     }
   } catch(err) {
+    this.error = "Error fetching user data. Please try again.";
     console.error('Error fetching user by ID', err);
   }
 },
 
     methods: {
-      ...mapActions(['updateEachUserProfile']),
+      ...mapActions(['updateEachUserProfile', 'getAllRoles']),
       async submitUpdateUserProfile() {
         try {
           await this.updateEachUserProfile(this.user);
@@ -168,15 +209,11 @@
     'user': {
       handler(newUser, oldUser) {
         if (JSON.stringify(newUser) !== JSON.stringify(oldUser)) {
-          // perform some action in response to the change in user
         }
       },
-      deep: true // ensure watcher triggers for nested data changes
+      deep: true
     }
 },
-
-
-
 
     components: {
       Card

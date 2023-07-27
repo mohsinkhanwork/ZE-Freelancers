@@ -91,9 +91,22 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('userData') // Assuming the relation name is 'user_data'
-                ->findorFail($id);
-        return response()->json($user, 200);
+        $user = User::with('userData')->findorFail($id);
+        if(!$user->userData) {
+            $user->userData = [
+                'company' => '',
+                'address' => '',
+                'city' => '',
+                'country' => '',
+                'postal_code' => '',
+                'description' => '',
+                'first_name' => '',
+                'last_name' => '',
+                'user_id' => $user->id,
+
+            ];
+        }
+        return response()->json($user);
     }
 
     /**
@@ -115,51 +128,53 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-{
-    $user = User::find($id);
+    {
+        $user = User::find($id);
 
-    if (!$user) {
-        return response([
-            'error' => 'User not found'
-        ], 404);
+        if (!$user) {
+            return response([
+                'error' => 'User not found'
+            ], 404);
+        }
+
+        $user_data = UserData::where('user_id', $id)->first();
+
+        if(!$user_data) {
+            $user_data = new UserData();
+            $user_data->user_id = $id;
+        }
+
+        $input_user_data = $request->input('user_data');  // Fetch user_data object once
+
+        $user_data->first_name = $input_user_data['first_name'];
+        $user_data->last_name = $input_user_data['last_name'];
+        $user_data->company = $input_user_data['company'];
+        $user_data->address = $input_user_data['address'];
+        $user_data->city = $input_user_data['city'];
+        $user_data->country = $input_user_data['country'];
+        $user_data->postal_code = $input_user_data['postal_code'];
+        $user_data->description = $input_user_data['description'];
+        $user_data->save();
+
+        try {
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            if($request->has('role')) {
+                $user->role = $request->get('role');
+                $user->save();
+              }
+            $user->save();
+
+            $updatedUser = User::with('userData') // The relation name is 'user_data'
+                            ->find($id);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating the profile: ' . $e->getMessage()
+            ], 400);
+        }
+        return response()->json($updatedUser, 200);
     }
-
-    $user_data = UserData::where('user_id', $id)->first();
-
-    if(!$user_data) {
-        $user_data = new UserData();
-        $user_data->user_id = $id;
-    }
-
-    $input_user_data = $request->input('user_data');  // Fetch user_data object once
-
-    $user_data->first_name = $input_user_data['first_name'];
-    $user_data->last_name = $input_user_data['last_name'];
-    $user_data->company = $input_user_data['company'];
-    $user_data->address = $input_user_data['address'];
-    $user_data->city = $input_user_data['city'];
-    $user_data->country = $input_user_data['country'];
-    $user_data->postal_code = $input_user_data['postal_code'];
-    $user_data->description = $input_user_data['description'];
-    $user_data->save();
-
-    try {
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->save();
-
-        $updatedUser = User::with('userData') // The relation name is 'user_data'
-                        ->find($id);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Error updating the profile: ' . $e->getMessage()
-        ], 400);
-    }
-
-
-    return response()->json($updatedUser, 200);
-}
 
 
     /**

@@ -51,7 +51,9 @@
                 Add Employee
               </p>
               <h4 class="mb-0">
-                34k
+                <span v-for="user in users" :key="user.id">
+                  {{ user.name }}
+                </span>
               </h4>
             </div>
           </div>
@@ -79,31 +81,21 @@
 </div>
 </template>
 <script>
-  import ChartCard from 'src/components/Cards/ChartCard.vue'
-  import StatsCard from 'src/components/Cards/StatsCard.vue'
-  import LTable from 'src/components/Table.vue'
-
   import { mapState } from 'vuex';
 
 
   export default {
-
-    components: {
-      LTable,
-      ChartCard,
-      StatsCard
+    computed: {
+      ...mapState([
+        'users',
+      ])
     },
     data () {
       return {
-        editTooltip: 'Edit Task',
-        deleteTooltip: 'Remove',
-        pieChart: {
-          data: {
-            labels: ['40%', '20%', '40%'],
-            series: [40, 20, 40]
-          }
-        },
       }
-    }
+    },
+    created () {
+      this.getAllUsers();
+    },
   }
 </script>

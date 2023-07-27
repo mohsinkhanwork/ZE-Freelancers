@@ -102,6 +102,10 @@ actions: {
        console.error('Error getting all users', e);
        throw e;
     }
+    if(response && response.status === 200) {
+      commit('setRoles', response.data);
+      return response.data;
+    }
 
   },
   async getAllRoles({commit}) {
@@ -112,6 +116,7 @@ actions: {
        console.error('Error getting all roles', e);
        throw e;
     }
+    console.log('response', response);
     if (response && response.status === 200) {
        commit('setRoles', response.data);
     }
