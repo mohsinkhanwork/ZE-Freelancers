@@ -229,7 +229,8 @@ export default {
     this.localUser.email = this.stateUser.email;
     this.localUser.role = this.stateUser.role;
     if(this.stateUser.user_data && this.stateUser.user_data.image) {
-      this.imageUrl = this.imageUrl = `http://localhost:8000/img/faces/${this.stateUser.user_data.image}`;
+      this.imageUrl = `${axiosConfig.imageBaseURL}/img/faces/${this.stateUser.user_data.image}`;
+
     }
   }
 },
@@ -247,7 +248,9 @@ export default {
           this.localUser.email = newUser.email;
           this.localUser.role = newUser.role;
           if(newUser.user_data && newUser.user_data.image) {
-            this.imageUrl =  `http://localhost:8000/img/faces/${this.stateUser.user_data.image}`;
+            // this.imageUrl =  `http://localhost:8000/img/faces/${this.stateUser.user_data.image}`;
+            this.imageUrl = `${axiosConfig.imageBaseURL}/img/faces/${this.stateUser.user_data.image}`;
+
           }
         }
       },

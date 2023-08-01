@@ -20,9 +20,6 @@ import store  from "./store";
 
 
 
-
-
-
 // LightBootstrap plugin
 import LightBootstrap from "./light-bootstrap-main";
 

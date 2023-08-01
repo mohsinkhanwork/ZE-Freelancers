@@ -158,7 +158,6 @@
 
     async created() {
         const roles = await this.getAllRoles();
-        console.log('roles', roles);
         if(roles && roles.length) {
           this.roles = roles;
         }

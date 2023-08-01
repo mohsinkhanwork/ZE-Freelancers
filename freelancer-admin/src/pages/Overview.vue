@@ -51,9 +51,10 @@
                 Add Employee
               </p>
               <h4 class="mb-0">
-                <span v-for="user in users" :key="user.id">
-                  {{ user.name }}
+                <span>
+                  Total number of employees
                 </span>
+                    {{users.length}}
               </h4>
             </div>
           </div>
