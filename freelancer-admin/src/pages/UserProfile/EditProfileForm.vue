@@ -248,7 +248,6 @@ export default {
           this.localUser.email = newUser.email;
           this.localUser.role = newUser.role;
           if(newUser.user_data && newUser.user_data.image) {
-            // this.imageUrl =  `http://localhost:8000/img/faces/${this.stateUser.user_data.image}`;
             this.imageUrl = `${axiosConfig.imageBaseURL}/img/faces/${this.stateUser.user_data.image}`;
 
           }

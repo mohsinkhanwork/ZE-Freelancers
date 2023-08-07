@@ -3,7 +3,7 @@
   <div class="col-lg-12 position-relative z-index-2">
     <div class="row">
       <div class="col-lg-5 col-sm-5">
-        <div class="card mb-2">
+        <div class="card cardBody mb-2">
           <div class="card-header p-3 pt-2 bg-gradient-to-r from-indigo-400">
             <div class="mt-n4">
               <div>
@@ -20,7 +20,7 @@
           <hr class="dark horizontal my-0">
           <div class="card-footer p-3"></div>
         </div>
-        <div class="card mb-2 mt-5">
+        <div class="card cardBody mb-2 mt-5">
           <div class="card-header p-3 pt-2 bg-gradient-to-r from-indigo-700 from-10% via-sky-600 via-30% to-emerald-600 to-40%">
             <div class="mt-n4">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="col-lg-5 col-sm-5 mt-sm-0 mt-4">
-        <div class="card mb-2">
+        <div class="card cardBody mb-2">
           <div class="card-header p-3 pt-2 bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-400">
             <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
               <router-link :to="{ name: 'Add User'}" class="btn btn-primary btn-sm active">
@@ -61,7 +61,7 @@
           <hr class="horizontal my-0 dark">
           <div class="card-footer p-3"></div>
         </div>
-        <div class="card mt-5">
+        <div class="card cardBody mt-5">
           <div class="card-header p-3 pt-2 bg-gradient-to-r from-green-400 to-blue-500">
             <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -100,3 +100,38 @@
     },
   }
 </script>
+
+<style>
+.content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Example font */
+}
+
+.card {
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: transform .2s, box-shadow .2s; /* Transition effect */
+}
+
+.cardBody:hover {
+    transform: scale(1.02); /* Slight zoom on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Darker shadow on hover */
+}
+
+.card-header, .card-footer {
+    border-radius: 8px 8px 0 0; /* Rounded corners for card header */
+    border-bottom: 1px solid #e2e8f0; /* Border between header and content */
+}
+
+.horizontal {
+    margin: 0; /* Reset margins */
+}
+
+.icon {
+    transition: background-color .2s; /* Transition effect for icons */
+}
+
+.icon:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Slight background change on hover */
+}
+
+</style>

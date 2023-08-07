@@ -24,7 +24,8 @@
             <input type="text" class="form-control"
             v-model="roleName"
             placeholder="Enter Role Name">
-            <button class="btn btn-primary btn-sm" @click="addRole">
+            <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium
+                    rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" @click="addRole">
               Add Role
             </button>
           </card>
@@ -100,8 +101,8 @@ export default {
         let response = await axios.post('/add-roles', {
           name: this.roleName
         }, axiosConfig);
-        this.roles.push(response.data); //here we push the new role to the roles array
-        this.roleName = ''; // clear input field
+        this.roles.push(response.data);
+        this.roleName = '';
       } catch (error) {
         console.error(error);
       }
@@ -115,7 +116,6 @@ export default {
             role: user.role,
             userId: userId
           }, axiosConfig);
-          // No need to push to roles or clear roleName here
         } catch (error) {
           console.error(error);
         }
