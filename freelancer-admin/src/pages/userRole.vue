@@ -1,12 +1,12 @@
 <template>
-  <div class="content">
+  <div class="content p-5">
     <div class="container-fluid">
-      <div class="row">
+      <div class="row mb-5">
         <div class="col-12">
-          <card class="card table-striped table-responsive">
-            <template slot="header">
-              <h4 class="card-title">Roles</h4>
-            </template>
+          <div class="card shadow table-striped table-responsive">
+            <div class="card-header bg-primary text-white">
+              <h4 class="card-title m-0 text-white">Roles</h4>
+            </div>
             <table class="table">
               <thead class="thead-light">
                 <tr>
@@ -21,22 +21,22 @@
                 </tr>
               </tbody>
             </table>
-            <input type="text" class="form-control"
-            v-model="roleName"
-            placeholder="Enter Role Name">
-            <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium
-                    rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" @click="addRole">
-              Add Role
-            </button>
-          </card>
+            <div class="card-footer">
+              <input type="text" v-model="roleName" placeholder="Enter Role Name" class="form-control mb-3">
+              <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium
+                      rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" @click="addRole">
+                Add Role
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <card class="card table-striped table-responsive">
-            <template slot="header">
-              <h4 class="card-title">All Users</h4>
-            </template>
+          <div class="card shadow table-striped table-responsive">
+            <div class="card-header bg-primary text-white">
+              <h4 class="card-title m-0 text-white">Users</h4>
+            </div>
             <table class="table">
               <thead class="thead-light">
                 <tr>
@@ -62,12 +62,13 @@
                 </tr>
               </tbody>
             </table>
-          </card>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import { mapActions, mapState } from 'vuex'
@@ -127,6 +128,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>

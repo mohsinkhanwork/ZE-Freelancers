@@ -3,18 +3,12 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <card class="card table-striped table-responsive">
-            <div class="card-header flex p-0">
-              <div class="p-2">
-                <h4 class="card-title">
-                  All Users
-                </h4>
-              </div>
-              <div class="ml-auto p-2">
-                <router-link :to="{ name: 'Add User'}" class="btn btn-primary btn-sm active"> + Add an Employee</router-link>
-              </div>
+          <div class="card shadow table-striped table-responsive">
+            <div class="card-header d-flex align-items-center justify-content-between py-3 px-4 bg-light">
+              <h4 class="card-title mb-0">All Users</h4>
+              <router-link :to="{ name: 'Add User'}" class="btn btn-primary btn-sm"> + Add an Employee</router-link>
             </div>
-            <table class="table">
+            <table class="table mb-0">
               <thead class="thead-light">
                 <tr>
                   <th>ID</th>
@@ -30,27 +24,21 @@
                   <td>{{ user.name }}</td>
                   <td>{{ user.email }}</td>
                   <td>{{ user.role }}</td>
-                  <td>
-                    <router-link :to="{ name: 'View User', params: { id: user.id } }" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium
-                    rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">View</router-link>
-
-                    <router-link :to="{ name: 'Edit User', params: { id: user.id } }" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4
-                    focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Edit</router-link>
-
-                    <button
-                      @click="deleteUser(user.id)"
-                      class="ml-1.5 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5
-                      mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-90">Delete</button>
+                  <td class="d-flex">
+                    <router-link :to="{ name: 'View User', params: { id: user.id } }" class="btn btn-info btn-sm mr-2">View</router-link>
+                    <router-link :to="{ name: 'Edit User', params: { id: user.id } }" class="btn btn-primary btn-sm mr-2">Edit</router-link>
+                    <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm">Delete</button>
                   </td>
                 </tr>
               </tbody>
             </table>
-          </card>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 
 <script>
@@ -95,5 +83,3 @@
     },
   }
 </script>
-<style>
-</style>

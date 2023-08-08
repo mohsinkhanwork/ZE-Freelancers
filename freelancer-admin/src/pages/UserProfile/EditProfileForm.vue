@@ -8,11 +8,12 @@
           </div>
         </div>
         <div>
-            <label class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:change="onChange">
-                Choose Image
-                <input type="file" style="display: none;">
-            </label>
-        </div>
+  <label class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Choose Image
+    <input type="file" style="display: none;" v-on:change="onChange">
+  </label>
+</div>
+
       <div class="row">
         <div class="col-md-5">
           <base-input
@@ -133,6 +134,9 @@
     </form>
   </card>
 </template>
+
+
+
 <script>
 import Card from 'src/components/Cards/Card.vue';
 import { mapState, mapActions } from 'vuex';
@@ -182,41 +186,60 @@ export default {
     onChange(e) {
       const image = e.target.files[0];
       this.localUser.user_data.image = image;
-      this.imageUrl = URL.createObjectURL(image);
+
+      // Create a new FileReader instance
+      const reader = new FileReader();
+
+      // Define the onload callback
+      reader.onload = (event) => {
+        // The result attribute contains the data URL
+        this.imageUrl = event.target.result;
+      };
+
+      // Start reading the image file as a data URL
+      reader.readAsDataURL(image);
     },
     async updateProfile() {
-      try {
-        const config = {
-          headers: {
-            'content-type': 'multipart/form-data',
-          },
-        };
-        const formData = new FormData();
+        try {
+          const config = {
+            headers: {
+              'content-type': 'multipart/form-data',
+            },
+          };
+          const formData = new FormData();
 
-        // Check if image exists before appending to formData
-        if (this.localUser.user_data.image && typeof this.localUser.user_data.image !== "string") {
-          formData.append('image', this.localUser.user_data.image);
+          // Check if image exists before appending to formData
+          if (this.localUser.user_data.image && typeof this.localUser.user_data.image !== "string") {
+              formData.append('image', this.localUser.user_data.image);
+          }
+
+          formData.append('id', this.localUser.id);
+
+          let imageResponse;
+          if (formData.has('image')) { // Only make image upload request if image is present
+            imageResponse = await axios.post(`${axiosConfig.baseURL}/image-upload`, formData, config);
+          }
+
+          // Now update the rest of the profile
+          const updatedUser = await this.$store.dispatch('updateUserProfile', this.localUser);
+
+          if (imageResponse && imageResponse.data.imageURL) {
+            this.localUser.user_data.image = imageResponse.data.imageURL;
+          }
+
+          this.localUser = { ...updatedUser };
+
+          if (this.localUser.user_data && this.localUser.user_data.image) {
+            this.imageUrl = `${axiosConfig.imageBaseURL}/img/faces/${this.localUser.user_data.image}`;
+          }
+
+          alert('Profile updated successfully');
+        } catch (error) {
+          console.log(error);
+          alert('Error updating profile');
+        }
         }
 
-        formData.append('id', this.localUser.id);
-
-        if (formData.has('image')) { // Only make image upload request if image is present
-          const imageResponse = await axios.post(`${axiosConfig.baseURL}/image-upload`, formData, config);
-          this.localUser.user_data.image = imageResponse.data.image;
-          this.imageUrl = imageResponse.data.imageURL;
-          this.$store.commit('setUser', { ...this.stateUser, user_data: { ...this.stateUser.user_data, image: imageResponse.data.imageURL } });
-        }
-
-        // Now update the rest of the profile
-        const updatedUser = await this.$store.dispatch('updateUserProfile', this.localUser);
-        this.localUser = { ...updatedUser };
-
-        alert('Profile updated successfully');
-      } catch (error) {
-        console.log(error);
-        alert('Error updating profile');
-      }
-    },
 
   },
   created() {
