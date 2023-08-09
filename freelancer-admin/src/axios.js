@@ -1,14 +1,19 @@
-//axios.js
+// Axios.js
+require('dotenv').config();
 
-// let baseURL;
+let baseURL;
+let imageBaseURL;
 
-// process.env.NODE_ENV === 'production'
-//   ? (baseURL = 'https://yourliveapiurl.com')
-//   : (baseURL = 'http://localhost:8000/api');
-
+if (process.env.NODE_ENV === 'production') {
+  baseURL = process.env.VUE_APP_API_BASE_URL;
+  imageBaseURL = process.env.VUE_APP_API_BASE_URL.replace('/api', '');
+} else {
+  baseURL = 'http://localhost:8000/api';
+  imageBaseURL = 'http://localhost:8000';
+}
 
 export default {
-  baseURL: 'http://localhost:8000/api', // Change this to your server URL.
-  imageBaseURL: 'http://localhost:8000', // Change this to your server URL.
+  baseURL,
+  imageBaseURL,
   timeout: 5000 // Set a timeout value if needed
 };
