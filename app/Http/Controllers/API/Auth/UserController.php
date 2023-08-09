@@ -244,6 +244,7 @@ class UserController extends Controller
 
         public function imageUpload(Request $request)
         {
+            print_r($request->company);
             $request->validate([
                 'id' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -255,26 +256,41 @@ class UserController extends Controller
 
             $imageURL = asset('img/faces/' . $imageName);
 
-            $user = User::with('userData')->find($request->id);
-            if($user){
-                $user->userData->image = $imageName;
-                $user->userData->save();
+            $user_data = UserData::where('user_id', $request->id)->first();
+
+            if (!$user_data) {
+                $user_data = new UserData();
+                $user_data->user_id = $request->id;
+                $user_data->image = $imageName;
+                $user_data->save();
+
                 return response()->json([
                     'success' => true,
-                    'user' => $user,
+                    'user_data' => $user_data,
                     'image' => $imageName,
                     'imageURL' => $imageURL,
-                    'message' => $imageName
-                  ]);
-
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User not found'
+                    'message' => 'User data and image updated successfully.'
                 ]);
+            } else {
+                $user = User::with('userData')->find($request->id);
+                if ($user) {
+                    $user->userData->image = $imageName;
+                    $user->userData->save();
+
+                    return response()->json([
+                        'success' => true,
+                        'user' => $user,
+                        'image' => $imageName,
+                        'imageURL' => $imageURL,
+                        'message' => 'Image updated successfully.'
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'User not found'
+                    ]);
+                }
             }
-
-
         }
 
         public function getUserImage($id) {

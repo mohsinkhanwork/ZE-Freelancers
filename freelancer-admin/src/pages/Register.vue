@@ -1,8 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="error-message" v-for="errorMessage in errorMessages" :key="errorMessage">
-      {{ errorMessage }}
-    </div>
     <div class="login-container">
       <div class="logo-section">
         <div class="justify-center flex">
@@ -14,6 +11,9 @@
         </div>
       </div>
       <span class="login-header">Register</span>
+      <div class="error-message text-red-500" v-for="errorMessage in errorMessages" :key="errorMessage">
+      {{ errorMessage }}
+    </div>
       <form @submit.prevent="register" class="login-form">
         <div class="input-group">
         <label for="name" class="input-label">Name:</label>

@@ -20,6 +20,9 @@ export default new Vuex.Store({
     setUser (state, user) {
         state.user = user;
     },
+    SET_USER_IMAGE(state, imageURL) {
+      state.user.user_data.image = imageURL;
+    },
     setToken (state, token) {
         state.token = token;
     },

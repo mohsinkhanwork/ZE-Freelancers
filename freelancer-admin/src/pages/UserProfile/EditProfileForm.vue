@@ -214,6 +214,9 @@ export default {
           }
 
           formData.append('id', this.localUser.id);
+          //send user_data as a array
+          formData.append('user_data', JSON.stringify(this.localUser.user_data));
+
 
           let imageResponse;
           if (formData.has('image')) { // Only make image upload request if image is present
