@@ -14,36 +14,62 @@ export default new Vuex.Store({
       roles: [],
       currentEditUser: null,
       currentUser: null,
-      loading: false
+      loading: false,
+      timerActive: false,
+      startTime: null,
+      endTime: null,
+      logs: []
+
   },
   mutations: {
-    setUser (state, user) {
-        state.user = user;
-    },
-    SET_USER_IMAGE(state, imageURL) {
-      state.user.user_data.image = imageURL;
-    },
-    setToken (state, token) {
-        state.token = token;
-    },
-    setUsers (state, users) {
-        state.users = users;
-    },
-    setRoles (state, roles) {
-        state.roles = roles;
-    },
-    addRole (state, role) {
-        state.roles.push(role);
-    },
-    setLoading (state, loading) {
-        state.loading = loading;
-    },
-    setCurrentEditUser (state, user) {
-        state.currentEditUser = user;
-    },
-    setCurrentUser (state, user) {
-        state.currentUser = user;
+      setUser (state, user) {
+          state.user = user;
+      },
+      SET_USER_IMAGE(state, imageURL) {
+        state.user.user_data.image = imageURL;
+      },
+      setToken (state, token) {
+          state.token = token;
+      },
+      setUsers (state, users) {
+          state.users = users;
+      },
+      setRoles (state, roles) {
+          state.roles = roles;
+      },
+      addRole (state, role) {
+          state.roles.push(role);
+      },
+      setLoading (state, loading) {
+          state.loading = loading;
+      },
+      setCurrentEditUser (state, user) {
+          state.currentEditUser = user;
+      },
+      setCurrentUser (state, user) {
+          state.currentUser = user;
+      },
+      startTimer(state) {
+        state.timerActive = true;
+        state.startTime = new Date().toISOString(); // ISO string format is a good choice
+      },
+      stopTimer(state) {
+          state.timerActive = false;
+          state.endTime = new Date().toISOString();
+      },
+      addLog(state, log) {
+          state.logs.push(log);
+      },
+      updateLogDescription(state, { logId, description }) {
+        const log = state.logs.find(log => log.id === logId);
+        if (log) {
+            log.description = description;
+        }
+     },
+     setLogs(state, logs) {
+      state.logs = logs;
     }
+
   },
 actions: {
   async addNewUserToServer({commit}, userData) {
@@ -143,7 +169,33 @@ actions: {
       commit('setLoading', false);
     }
 
-  }
-},
+  },
+    async saveLog({ commit }, logData) {
+      try {
+          const response = await axios.post(`${axiosConfig.baseURL}/manual-entry`, logData);
+          console.log("Saved Log Data:", response.data); //
+          commit('addLog', response.data);
+      } catch (e) {
+        console.log(e.response);
+          let errorMessage = e.response && e.response.data && e.response.data.message
+                             ? e.response.data.message
+                             : 'Error saving the log';
+          throw new Error(errorMessage);
+        }
+    },
+    async fetchLogs({commit, state}) {
+      let response;
+      try {
+        response = await axios.get(`${axiosConfig.baseURL}/timelogs/${state.currentUser.id}`);
+        console.log("Logs from Backend:", response.data);
+          if (response && response.status === 200) {
+              commit('setLogs', response.data.data);
+          }
+      } catch (e) {
+          console.error('Error fetching logs', e);
+          throw e;
+      }
+  },
+  },
   plugins: [VuexPersistedState()]
 });

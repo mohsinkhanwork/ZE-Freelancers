@@ -13,6 +13,7 @@ import Callback from 'src/pages/Callback.vue'
 import store from '../store/index.js';
 import editUser from "src/pages/editUser";
 import addUser from "src/pages/addUser";
+import userTime from "src/pages/userTime";
 
 const routes = [
   {
@@ -68,6 +69,11 @@ const routes = [
         name: 'View User',
         component: editUser,
         meta : { editMode: false }
+      },
+      {
+        path: 'user-time',
+        name: 'User Time',
+        component: userTime,
       },
     ]
   },

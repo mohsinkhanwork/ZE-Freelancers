@@ -38,5 +38,16 @@ Route::post('/add-user', 'API\Auth\UserController@store')->name('user.store');
 // image upload APIs
 Route::get('/user/{id}/image', 'UserController@getUserImage');
 
+//time logs entry APIs
+
+// Time Logs Routes
+Route::post('/manual-entry', 'API\Auth\TimeLogController@manualEntry')->name('timelog.manual');
+Route::get('/logs', 'API\Auth\TimeLogController@getLogs')->name('timelog.getLogs');
+Route::get('/timelogs/{user_id}', 'API\Auth\TimeLogController@index')->name('timelogs.index');
+
+
+
+
+
 
 

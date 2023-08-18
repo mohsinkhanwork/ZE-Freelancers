@@ -20,6 +20,11 @@
         <i class="nc-icon nc-notes"></i>
         <p>Role Management</p>
       </router-link>
+      <router-link v-if="isUser" class="sideBar"
+      to="/admin/user-time">
+        <i class="nc-icon nc-notes"></i>
+        <p>Log Time</p>
+      </router-link>
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>
@@ -41,30 +46,22 @@
   import DashboardContent from './Content.vue'
   import MobileMenu from './MobileMenu.vue'
   import { mapState, mapActions } from 'vuex'
+
   export default {
     computed: {
       ...mapState({
         currentUser: state => state.currentUser
       }),
-      isAdmin () {
-        return (
-          this.currentUser && this.currentUser.role === 'admin'
-      );
+      isAdmin() {
+        return this.currentUser && this.currentUser.role === 'admin';
+      },
+      isUser() {
+        return this.currentUser && this.currentUser.role !== 'admin';
       }
     },
 
-    // watch: {
-    //   'user': {
-    //     handler(newUser) {
-    //       this.user = newUser
-    //     },
-    //     deep: true
-    //   }
-    // },
-
-    data () {
-      return {
-      }
+    data() {
+      return {}
     },
 
     components: {
@@ -73,16 +70,17 @@
       DashboardContent,
       MobileMenu
     },
+
     methods: {
-      toggleSidebar () {
+      toggleSidebar() {
         if (this.$sidebar.showSidebar) {
-          this.$sidebar.displaySidebar(false)
+          this.$sidebar.displaySidebar(false);
         }
       }
     }
   }
-
 </script>
+
 
 <style>
   .sideBar {
