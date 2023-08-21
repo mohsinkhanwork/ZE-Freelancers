@@ -44,10 +44,5 @@ Route::get('/user/{id}/image', 'UserController@getUserImage');
 Route::post('/manual-entry', 'API\Auth\TimeLogController@manualEntry')->name('timelog.manual');
 Route::get('/logs', 'API\Auth\TimeLogController@getLogs')->name('timelog.getLogs');
 Route::get('/timelogs/{user_id}', 'API\Auth\TimeLogController@index')->name('timelogs.index');
-
-
-
-
-
-
+Route::get('/export-excel', 'API\Auth\TimeLogController@exportExcel')->name('logs.exportExcel');
 

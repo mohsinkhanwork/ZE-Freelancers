@@ -24,7 +24,8 @@
       <div v-if="errors.description" class="text-red-500 mt-2">
         {{ errors.description }}
       </div>
-      <button @click="saveManualLog" class="mt-4 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300">Log Time</button>
+      <button @click="saveManualLog" class="mt-4 mr-3 py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300">Log Time</button>
+      <button @click="downloadExcelReport" class="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all duration-300">Generate Excel Report</button>
     </div>
 
     <!-- Logs Table -->
@@ -58,8 +59,11 @@
 
 
 <script>
-import { mapActions } from 'vuex';
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import axios from 'axios';
+import axiosConfig from '../axios';
+
+
 
 const week = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']; // Define the week array
 
@@ -104,6 +108,19 @@ created() {
 },
   methods: {
     ...mapActions(['startTimer', 'stopTimerAndLog', 'saveLog', 'fetchLogs']),
+    async downloadExcelReport() {
+        try {
+            const response = await axios.get(`${axiosConfig.baseURL}/export-excel`, { responseType: 'blob' });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'logs.xlsx'); //or any other format you want
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            console.error('Error downloading the file', error);
+        }
+    },
 
         statusClass(status) {
           switch (status) {

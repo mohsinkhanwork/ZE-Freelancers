@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TimeLog;
 use Illuminate\Support\Facades\Validator;
+use App\Exports\LogsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TimeLogController extends Controller
 {
@@ -140,7 +142,9 @@ class TimeLogController extends Controller
         ], 201);
     }
 
-
+    public function exportExcel() {
+        return Excel::download(new LogsExport, 'logs.xlsx');
+    }
 
 
 }
