@@ -19,17 +19,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="user in users" :key="user.id">
-                  <td>{{ user.id }}</td>
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.email }}</td>
-                  <td>{{ user.role }}</td>
-                  <td class="d-flex">
-                    <router-link :to="{ name: 'View User', params: { id: user.id } }" class="btn btn-info btn-sm mr-2">View</router-link>
-                    <router-link :to="{ name: 'Edit User', params: { id: user.id } }" class="btn btn-primary btn-sm mr-2">Edit</router-link>
-                    <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm">Delete</button>
-                  </td>
-                </tr>
+                  <tr v-for="user in users" :key="user.id" class="border-b border-gray-200 hover:bg-gray-100 transition-all duration-300">
+                      <td class="py-2 px-4">{{ user.id }}</td>
+                      <td class="py-2 px-4">{{ user.name }}</td>
+                      <td class="py-2 px-4">{{ user.email }}</td>
+                      <td class="py-2 px-4">{{ user.role }}</td>
+                      <td class="py-2 px-4 d-flex flex-wrap gap-2">
+                          <router-link :to="{ name: 'View User', params: { id: user.id } }" class="btn btn-info btn-sm">View</router-link>
+                          <router-link :to="{ name: 'Edit User', params: { id: user.id } }" class="btn btn-primary btn-sm">Edit</router-link>
+                          <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm">Delete</button>
+                          <router-link :to="{name: 'Logged Time', params: {id: user.id }}" class="text-sm py-1 px-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all duration-300">See Logged time</router-link>
+                      </td>
+                  </tr>
               </tbody>
             </table>
           </div>

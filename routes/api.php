@@ -44,5 +44,6 @@ Route::get('/user/{id}/image', 'UserController@getUserImage');
 Route::post('/manual-entry', 'API\Auth\TimeLogController@manualEntry')->name('timelog.manual');
 Route::get('/logs', 'API\Auth\TimeLogController@getLogs')->name('timelog.getLogs');
 Route::get('/timelogs/{user_id}', 'API\Auth\TimeLogController@index')->name('timelogs.index');
-Route::get('/export-excel', 'API\Auth\TimeLogController@exportExcel')->name('logs.exportExcel');
-
+Route::get('/export-excel/{userId}', 'API\Auth\TimeLogController@exportExcel')->name('logs.exportExcel');
+Route::put('/timelogs/{log_id}/approve', 'API\Auth\TimeLogController@approveLog')->name('timelogs.approve');
+Route::put('/timelogs/{log_id}/disapprove', 'API\Auth\TimeLogController@disapproveLog')->name('timelogs.disapprove');

@@ -14,6 +14,7 @@ import store from '../store/index.js';
 import editUser from "src/pages/editUser";
 import addUser from "src/pages/addUser";
 import userTime from "src/pages/userTime";
+import AdminLoggedTime from "src/pages/AdminLoggedTime";
 
 const routes = [
   {
@@ -75,6 +76,11 @@ const routes = [
         name: 'User Time',
         component: userTime,
       },
+      {
+        path: 'time-logs/:id',
+        name: 'Logged Time',
+        component: AdminLoggedTime,
+      }
     ]
   },
   {

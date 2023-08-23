@@ -59,6 +59,11 @@ class User extends Authenticatable
         {
             return $this->hasOne(UserData::class);
         }
+
+    public function timeLogs()
+        {
+            return $this->hasMany(TimeLog::class);
+        }
 }
 
 

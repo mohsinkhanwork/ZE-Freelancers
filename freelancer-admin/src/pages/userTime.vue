@@ -110,7 +110,8 @@ created() {
     ...mapActions(['startTimer', 'stopTimerAndLog', 'saveLog', 'fetchLogs']),
     async downloadExcelReport() {
         try {
-            const response = await axios.get(`${axiosConfig.baseURL}/export-excel`, { responseType: 'blob' });
+          const userId = this.$store.state.currentUser.id
+            const response = await axios.get(`${axiosConfig.baseURL}/export-excel/${userId}`, { responseType: 'blob' });
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;

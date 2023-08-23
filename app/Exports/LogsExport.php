@@ -9,13 +9,19 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class LogsExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
+    protected $userId;
+
+    public function __construct($userId)
+    {
+        $this->userId = $userId;
+    }
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
         // Fetch all logs and then map each log to transform the data format as needed
-        return TimeLog::all()->map(function ($log) {
+        return TimeLog::where('user_id', $this->userId)->get()->map(function ($log) {
             return [
                 'start_time'       => substr($log->start_time, 11, 8), // Assuming start_time is a datetime string
                 'end_time'         => substr($log->end_time, 11, 8),   // Assuming end_time is a datetime string

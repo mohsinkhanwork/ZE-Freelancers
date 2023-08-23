@@ -26,6 +26,33 @@ class TimeLogController extends Controller
         ], 200);
     }
 
+    public function approveLog($log_id)
+        {
+            $log = TimeLog::find($log_id);
+            if(!$log) {
+                return response()->json(['success' => false, 'message' => 'Log not found'], 404);
+            }
+
+            $log->status = 'Approved';
+            $log->save();
+
+            return response()->json(['success' => true, 'message' => 'Log approved successfully'], 200);
+        }
+
+        public function disapproveLog($log_id)
+        {
+            $log = TimeLog::find($log_id);
+            if(!$log) {
+                return response()->json(['success' => false, 'message' => 'Log not found'], 404);
+            }
+
+            $log->status = 'Not approved';
+            $log->save();
+
+            return response()->json(['success' => true, 'message' => 'Log Not approved'], 200);
+        }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -142,8 +169,8 @@ class TimeLogController extends Controller
         ], 201);
     }
 
-    public function exportExcel() {
-        return Excel::download(new LogsExport, 'logs.xlsx');
+    public function exportExcel($userId) {
+        return Excel::download(new LogsExport($userId), 'logs.xlsx');
     }
 
 

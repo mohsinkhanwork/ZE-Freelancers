@@ -69,7 +69,6 @@ export default new Vuex.Store({
      setLogs(state, logs) {
       state.logs = logs;
     }
-
   },
 actions: {
   async addNewUserToServer({commit}, userData) {
@@ -183,10 +182,10 @@ actions: {
           throw new Error(errorMessage);
         }
     },
-    async fetchLogs({commit, state}) {
+    async fetchLogs({commit, state}, userId = state.currentUser.id) {
       let response;
       try {
-        response = await axios.get(`${axiosConfig.baseURL}/timelogs/${state.currentUser.id}`);
+        response = await axios.get(`${axiosConfig.baseURL}/timelogs/${userId}`);
         console.log("Logs from Backend:", response.data);
           if (response && response.status === 200) {
               commit('setLogs', response.data.data);

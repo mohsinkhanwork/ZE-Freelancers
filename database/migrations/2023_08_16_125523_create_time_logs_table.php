@@ -20,7 +20,7 @@ class CreateTimeLogsTable extends Migration
             $table->time('end_time');
             $table->string('description');
             $table->integer('duration')->default(0);  // Storing in minutes
-            $table->enum('status', ['approved', 'Not approved', 'Pending'])->default('Pending');
+            $table->enum('status', ['Approved', 'Not approved', 'Pending'])->default('Pending');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); //foreign key
